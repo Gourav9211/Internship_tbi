@@ -1,26 +1,82 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-doodle-body), sans-serif;
+  --font-display: var(--font-doodle-title), cursive;
+  
+  --color-brand-orange: #ff5722;
+  --color-brand-orange-hover: #e64a19;
+  --color-cyber-black: #0c0d0e;
+  --color-tech-gray: #f4f5f6;
+  --color-tech-border: #0c0d0e;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f6; /* Warm sketchpad paper color */
+  --foreground: #0c0d0e;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Notebook Math Graph Paper Grid Background */
+.tech-grid-bg {
+  background-image: 
+    linear-gradient(rgba(12, 13, 14, 0.04) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(12, 13, 14, 0.04) 1.5px, transparent 1.5px);
+  background-size: 35px 35px;
+  background-position: center top;
+}
+
+/* Custom Hand-Drawn Wavy Borders */
+
+/* Small elements, navboxes, buttons */
+.doodle-border {
+  border: 2px solid #0c0d0e;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+/* Larger cards, sections, preview wrappers */
+.doodle-border-lg {
+  border: 3px solid #0c0d0e;
+  border-radius: 20px 255px 20px 255px / 255px 20px 255px 20px;
+}
+
+/* Slightly thinner sketchy border */
+.doodle-border-sm {
+  border: 1.5px solid #0c0d0e;
+  border-radius: 255px 20px 225px 20px / 20px 225px 20px 255px;
+}
+
+/* Custom scrollbars that look sketchy */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-left: 2px dashed #0c0d0e;
+}
+::-webkit-scrollbar-thumb {
+  background: #0c0d0e;
+  border: 2px solid #faf9f6;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff5722;
+}
+
+/* Text highlighting underlines */
+.stroke-text {
+  -webkit-text-stroke: 1.5px #0c0d0e;
+  text-stroke: 1.5px #0c0d0e;
+  color: transparent;
 }
