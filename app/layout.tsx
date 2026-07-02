@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Architects_Daughter, Patrick_Hand } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const architectsDaughter = Architects_Daughter({
@@ -31,7 +32,10 @@ export default function RootLayout({
       lang="en"
       className={`${architectsDaughter.variable} ${patrickHand.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#faf9f6] text-[#0c0d0e]">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#faf9f6] text-[#0c0d0e]">
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
