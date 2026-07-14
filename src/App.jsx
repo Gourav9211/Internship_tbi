@@ -11,14 +11,16 @@ import BuyNow from "./components/BuyNow";
 import Products from "./components/Products";
 import WatchTrailer from "./components/WatchTrailer";
 import ContactPage from "./components/ContactPage";
+import Preloader from "./components/Preloader";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedProductId, setSelectedProductId] = useState("obsidian-key");
+  const [showPreloader, setShowPreloader] = useState(true);
 
-  // Prevent background scroll when overlays are active
+  // Prevent background scroll when overlays or preloader are active
   useEffect(() => {
-    if (currentPage !== "home") {
+    if (showPreloader || currentPage !== "home") {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -26,7 +28,7 @@ function App() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [currentPage]);
+  }, [currentPage, showPreloader]);
 
   const handleNavigateToBuy = (productId = "obsidian-key") => {
     setSelectedProductId(productId);
@@ -51,6 +53,10 @@ function App() {
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
+      {/* Preloader */}
+      {showPreloader && (
+        <Preloader onComplete={() => setShowPreloader(false)} />
+      )}
       {/* Home Page - Persistently mounted to preserve scroll & GSAP state */}
       <div className={currentPage !== "home" ? "h-screen overflow-hidden" : ""}>
         <NavBar 
@@ -58,7 +64,7 @@ function App() {
           onProductsClick={handleNavigateToProducts}
           onContactClick={handleNavigateToContact}
         />
-        <Hero onWatchTrailerClick={handleNavigateToTrailer} />
+        <Hero onWatchTrailerClick={handleNavigateToTrailer} isReady={!showPreloader} />
         <About />
         <Features />
         <Story />

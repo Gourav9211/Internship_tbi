@@ -9,7 +9,7 @@ import VideoPreview from "./VideoPreview";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = ({ onWatchTrailerClick }) => {
+const Hero = ({ onWatchTrailerClick, isReady }) => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -18,6 +18,7 @@ const Hero = ({ onWatchTrailerClick }) => {
 
   const totalVideos = 4;
   const nextVdRef = useRef(null);
+  const mainVdRef = useRef(null);
 
   const handleVideoLoad = () => {
     setLoadedVideos((prev) => prev + 1);
@@ -28,6 +29,13 @@ const Hero = ({ onWatchTrailerClick }) => {
       setLoading(false);
     }
   }, [loadedVideos]);
+
+  // Play main video only when preloader is done
+  useEffect(() => {
+    if (isReady && mainVdRef.current) {
+      mainVdRef.current.play();
+    }
+  }, [isReady]);
 
   const handleMiniVdClick = () => {
     setHasClicked(true);
@@ -129,10 +137,10 @@ const Hero = ({ onWatchTrailerClick }) => {
             onLoadedData={handleVideoLoad}
           />
           <video
+            ref={mainVdRef}
             src={getVideoSrc(
               currentIndex === totalVideos - 1 ? 1 : currentIndex
             )}
-            autoPlay
             loop
             muted
             className="absolute left-0 top-0 size-full object-cover object-center"

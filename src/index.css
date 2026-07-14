@@ -271,3 +271,183 @@ body {
     opacity: 0.8;
   }
 }
+
+/* =============================================
+   PRELOADER STYLES
+   ============================================= */
+
+.preloader-wrapper {
+  overflow: hidden;
+}
+
+/* Split panels — two black halves covering the screen */
+.preloader-panel {
+  position: absolute;
+  top: -5%;
+  width: 55%;
+  height: 115%;
+  background-color: #000;
+  will-change: transform;
+}
+
+.preloader-panel-left {
+  left: -5%;
+}
+
+.preloader-panel-right {
+  right: -5%;
+}
+
+/* Center split line */
+.preloader-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 10%,
+    #fff 30%,
+    #fff 70%,
+    rgba(255, 255, 255, 0.4) 90%,
+    transparent 100%
+  );
+  transform-origin: top center;
+  opacity: 0;
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(237, 255, 102, 0.15);
+}
+
+/* White flash overlay */
+.preloader-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.8) 30%,
+    rgba(255, 255, 255, 0.4) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Content container — holds counter & explore button */
+.preloader-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Loading counter */
+.preloader-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15em;
+  user-select: none;
+}
+
+.preloader-counter-number {
+  font-family: "zentry", sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 9rem);
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.02em;
+  font-feature-settings: "tnum" on;
+  tabular-nums: true;
+}
+
+.preloader-counter-percent {
+  font-family: "general", sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.75rem);
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Explore button */
+.preloader-explore-btn {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: #edff66;
+  color: #000;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: "general", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: preloader-pulse 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.preloader-explore-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(237, 255, 102, 0.4),
+    0 0 60px rgba(237, 255, 102, 0.15);
+  animation: none;
+}
+
+/* Explore button text with hover effect */
+.preloader-explore-text {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.preloader-explore-text-inner {
+  display: block;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.preloader-explore-text-hover {
+  position: absolute;
+  display: block;
+  transform: translateY(160%) skewY(12deg);
+  transition: transform 0.5s ease;
+}
+
+.preloader-explore-btn:hover .preloader-explore-text-inner {
+  transform: translateY(-160%) skewY(12deg);
+}
+
+.preloader-explore-btn:hover .preloader-explore-text-hover {
+  transform: translateY(0) skewY(0);
+}
+
+.preloader-explore-arrow {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.preloader-explore-btn:hover .preloader-explore-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Pulse animation for explore button */
+@keyframes preloader-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(237, 255, 102, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(237, 255, 102, 0.15);
+  }
+}
