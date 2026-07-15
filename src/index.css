@@ -1,4 +1,5 @@
-@import url("https://fonts.cdnfonts.com/css/general-sans");
+
+
 
 @tailwind base;
 @tailwind components;
@@ -12,6 +13,34 @@ body {
 }
 
 @layer base {
+  @font-face {
+    font-family: "General Sans";
+    src: url("/fonts/general-sans-regular.woff") format("woff");
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "General Sans";
+    src: url("/fonts/general-sans-medium.woff") format("woff");
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "General Sans";
+    src: url("/fonts/general-sans-semibold.woff") format("woff");
+    font-weight: 600;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "General Sans";
+    src: url("/fonts/general-sans-bold.woff") format("woff");
+    font-weight: 700;
+    font-display: swap;
+  }
+
   @font-face {
     font-family: "circular-web";
     src: url("/fonts/circularweb-book.woff2") format("woff2");

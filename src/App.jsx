@@ -8,7 +8,7 @@ import Vault from "./components/Vault";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Preloader from "./components/Preloader";
-import Watermark from "./components/Watermark";
+
 
 const BuyNow = lazy(() => import("./components/BuyNow"));
 const Products = lazy(() => import("./components/Products"));
@@ -65,7 +65,6 @@ function App() {
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
-      <Watermark />
       {showPreloader && (
         <Preloader onComplete={() => setShowPreloader(false)} />
       )}
