@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import About from "./components/About";
 import Hero from "./components/Hero";
 import NavBar from "./components/Navbar";
@@ -7,11 +7,23 @@ import Story from "./components/Story";
 import Vault from "./components/Vault";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import BuyNow from "./components/BuyNow";
-import Products from "./components/Products";
-import WatchTrailer from "./components/WatchTrailer";
-import ContactPage from "./components/ContactPage";
 import Preloader from "./components/Preloader";
+import Watermark from "./components/Watermark";
+
+const BuyNow = lazy(() => import("./components/BuyNow"));
+const Products = lazy(() => import("./components/Products"));
+const WatchTrailer = lazy(() => import("./components/WatchTrailer"));
+const ContactPage = lazy(() => import("./components/ContactPage"));
+
+const OverlayLoader = () => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+    <div className="three-body">
+      <div className="three-body__dot" />
+      <div className="three-body__dot" />
+      <div className="three-body__dot" />
+    </div>
+  </div>
+);
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -53,11 +65,10 @@ function App() {
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
-      {/* Preloader */}
+      <Watermark />
       {showPreloader && (
         <Preloader onComplete={() => setShowPreloader(false)} />
       )}
-      {/* Home Page - Persistently mounted to preserve scroll & GSAP state */}
       <div className={currentPage !== "home" ? "h-screen overflow-hidden" : ""}>
         <NavBar 
           onBuyClick={() => handleNavigateToBuy("obsidian-key")} 
@@ -73,39 +84,37 @@ function App() {
         <Footer onContactClick={handleNavigateToContact} />
       </div>
 
-      {/* Products Page Overlay */}
-      {currentPage === "products" && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black will-change-[transform,opacity]">
-          <Products 
-            onClose={handleNavigateToHome} 
-            onBuyClick={handleNavigateToBuy} 
-          />
-        </div>
-      )}
+      <Suspense fallback={<OverlayLoader />}>
+        {currentPage === "products" && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black will-change-[transform,opacity]">
+            <Products 
+              onClose={handleNavigateToHome} 
+              onBuyClick={handleNavigateToBuy} 
+            />
+          </div>
+        )}
 
-      {/* Buy Now Page Overlay */}
-      {currentPage === "buy" && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black will-change-[transform,opacity]">
-          <BuyNow 
-            onClose={handleNavigateToHome} 
-            preSelectedProductId={selectedProductId} 
-          />
-        </div>
-      )}
+        {currentPage === "buy" && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black will-change-[transform,opacity]">
+            <BuyNow 
+              onClose={handleNavigateToHome} 
+              preSelectedProductId={selectedProductId} 
+            />
+          </div>
+        )}
 
-      {/* Watch Trailer Overlay */}
-      {currentPage === "trailer" && (
-        <div className="fixed inset-0 z-50 overflow-hidden bg-black will-change-[transform,opacity]">
-          <WatchTrailer onClose={handleNavigateToHome} />
-        </div>
-      )}
+        {currentPage === "trailer" && (
+          <div className="fixed inset-0 z-50 overflow-hidden bg-black will-change-[transform,opacity]">
+            <WatchTrailer onClose={handleNavigateToHome} />
+          </div>
+        )}
 
-      {/* Contact Page Overlay */}
-      {currentPage === "contact" && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black will-change-[transform,opacity]">
-          <ContactPage onClose={handleNavigateToHome} />
-        </div>
-      )}
+        {currentPage === "contact" && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black will-change-[transform,opacity]">
+            <ContactPage onClose={handleNavigateToHome} />
+          </div>
+        )}
+      </Suspense>
     </main>
   );
 }

@@ -13,12 +13,9 @@ const PRELOAD_IMAGES = [
   "/img/about.webp",
   "/img/entrance.webp",
   "/img/swordman.webp",
-  "/img/stones.webp",
   "/img/gallery-1.webp",
   "/img/gallery-2.webp",
   "/img/gallery-3.webp",
-  "/img/gallery-4.webp",
-  "/img/gallery-5.webp",
 ];
 
 const TOTAL_RESOURCES = PRELOAD_VIDEOS.length + PRELOAD_IMAGES.length;

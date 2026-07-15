@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TiLocationArrow } from "react-icons/ti";
 
 export const BentoTilt = ({ children, className = "" }) => {
@@ -41,7 +41,34 @@ export const BentoTilt = ({ children, className = "" }) => {
 export const BentoCard = ({ src, title, description, isComingSoon }) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [hoverOpacity, setHoverOpacity] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   const hoverButtonRef = useRef(null);
+  const cardRef = useRef(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isVisible && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [isVisible]);
 
   const handleMouseMove = (event) => {
     if (!hoverButtonRef.current) return;
@@ -57,14 +84,16 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
   const handleMouseLeave = () => setHoverOpacity(0);
 
   return (
-    <div className="relative size-full">
-      <video
-        src={src}
-        loop
-        muted
-        autoPlay
-        className="absolute left-0 top-0 size-full object-cover object-center"
-      />
+    <div ref={cardRef} className="relative size-full">
+      {isVisible && (
+        <video
+          ref={videoRef}
+          src={src}
+          loop
+          muted
+          className="absolute left-0 top-0 size-full object-cover object-center"
+        />
+      )}
       <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
         <div>
           <h1 className="bento-title special-font">{title}</h1>
@@ -94,6 +123,50 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+const LazyVideo = ({ src, className }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isVisible && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [isVisible]);
+
+  return (
+    <div ref={ref} className="size-full">
+      {isVisible && (
+        <video
+          ref={videoRef}
+          src={src}
+          loop
+          muted
+          className={className}
+        />
+      )}
     </div>
   );
 };
@@ -176,13 +249,7 @@ const Features = () => (
         </BentoTilt>
 
         <BentoTilt className="bento-tilt_2">
-          <video
-            src="videos/feature-5.mp4"
-            loop
-            muted
-            autoPlay
-            className="size-full object-cover object-center"
-          />
+          <LazyVideo src="videos/feature-5.mp4" className="size-full object-cover object-center" />
         </BentoTilt>
       </div>
     </div>
